@@ -12,6 +12,22 @@ h2{
 	margin-bottom:10px;
 }
 
+table{
+    /*width: 600px;*/
+    border: 1;
+    /*background-color: #C9C9C9;*/
+}
+
+thead{
+    background-color: #00ff90;
+}
+
+td{
+    width: 80px;    
+    
+}
+
+
 #wrapper{
 	width:720px;
 	margin:40px auto 0;
@@ -111,3 +127,10 @@ h2{
 	margin:0;
 	color:#333;
 }
+
+.stockcode{
+    text-decoration:underline;
+    color: blue;
+    cursor:pointer;
+}
+
