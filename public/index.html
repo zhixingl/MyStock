@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<link href="stylesheets\style.css" rel="stylesheet" type="text/css">
-<title>My Stock</title>
+  <meta charset="utf-8">
+  <link href="stylesheets\style.css" rel="stylesheet" type="text/css">
+  <title>My Stock</title>
+  
+  <script src="javascripts\dateformat.js"></script>
+  
 </head>
 <body>
 <div id="wrapper">
@@ -12,8 +15,8 @@
     <div id="tabs">
       <ul>
         <li id="tabHeader_1">已买</li>
-        <li id="tabHeader_2">已卖</li>
-        <li id="tabHeader_3">Page 3</li>
+        <li id="tabHeader_2">卖1</li>
+        <li id="tabHeader_3">卖2</li>
       </ul>
     </div>
     <div id="tabscontent">
@@ -24,27 +27,33 @@
                   <tr><td>代码</td><td>名称</td><td>买入日期</td><td>买入价</td><td>买入数量</td><td>当前价格</td><td>盈利</td></tr>
               </thead>
              <tbody>
-             <!--
-                  <tr><td class="stockcode">sh600000</td><td>浦发银行</td><td>2012/07/31</td><td>6.78</td><td>1000</td><td>6.89</td><td>3.0%</td></tr>
-              -->
-             </tbody>
-          </table>
-      </div>
-      <div class="tabpage" id="tabpage_2">
-        <h2>已卖</h2>
-        <table id="tblSold">
-              <thead>
-                  <tr><td>代码</td><td>名称</td><td>买入日期</td><td>买入价</td><td>买入数量</td>
-                    <td>买出日期</td><td>买出价</td><td>当前价格</td><td>盈利</td></tr>
-              </thead>
-             <tbody>
 
              </tbody>
           </table>
       </div>
+      <div class="tabpage" id="tabpage_2">
+        <h2>卖1</h2>
+        <table id="tblSold1">
+            <thead>
+                  <tr><td>代码</td><td>名称</td><td>买入日期</td><td>买入价</td><td>买入数量</td>
+                    <td>买出日期</td><td>买出价</td><td>买出数量</td><td>当前价格</td><td>盈利</td></tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+      </div>
       <div class="tabpage" id="tabpage_3">
-        <h2>Page 3</h2>
-        <p>coming soon...</p>
+        <h2>卖2</h2>
+        <table id="tblSold2">
+            <thead>
+                  <tr><td>代码</td><td>名称</td><td>买入日期</td><td>买入价</td><td>买入数量</td>
+                    <td>买出日期</td><td>买出价</td><td>买出数量</td><td>当前价格</td><td>盈利</td></tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
       </div>
     </div>
   </div>

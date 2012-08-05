@@ -45,9 +45,13 @@ function displayPage() {
 }
 
 function initializeData(){
+    if(XMLHttpRequest.DONE == undefined){
+        XMLHttpRequest.prototype.DONE = 4;
+    }
     retrieveBoughtData();
-    retrieveSoldData();
-    //setTimeout(initializeData, 30000);
+    retrieveSoldData1();
+    retrieveSoldData2();
+    setTimeout(initializeData, 30000);
 }
 
 function retrieveBoughtData(){
@@ -59,12 +63,17 @@ function retrieveBoughtData(){
     xhr.onreadystatechange = function () {
       if (xhr.readyState == xhr.DONE) {
         var jsonData = xhr.response;
+        if(jsonData == undefined){
+            jsonData = xhr.responseText;
+        }
         var jsonArray = JSON.parse(jsonData);
         
         var content = "";
         var item;
         var row;
         var tBody = tblBought.tBodies[0];
+        //tBody.innerHTML = "";
+        clearTbody(tBody);
         for(var i = 0; i < jsonArray.length; i ++){
         //var content = "<tr><td>sh600000</td><td>浦发银行</td><td>2012/07/31</td><td>6.78</td><td>1000</td><td>6.89</td><td>3.0%</td></tr>";
         //content += content;
@@ -77,16 +86,17 @@ function retrieveBoughtData(){
                         + item.code 
                         + "</td>";
             content += "<td>" + item.name + "</td>";
-            content += "<td>" + item.buyDate + "</td>";
+            content += "<td title='" + new Date(parseInt(item.buyDate)).toLocaleString() + "''>" 
+                    + new Date(parseInt(item.buyDate)).format('mm/dd/yyyy') + "</td>";
             content += "<td>" + item.buyPrice + "</td>";
-            content += "<td>" + item.buyVolumn + "</td>";
+            content += "<td>" + item.buyVolume + "</td>";
             content += "<td>" + item.currPrice + "</td>";
             content += "<td>" + ((item.currPrice - item.buyPrice) * 100 / item.buyPrice).toFixed(2) + "%</td>";
             
             row.innerHTML = content;
-            row.setAttribute("code", item.code);
+            row.firstChild.setAttribute("code", item.code);
 
-            row.addEventListener("click", function(){
+            row.firstChild.addEventListener("click", function(){
                 var url = "http://finance.sina.com.cn/realstock/company/"
                         + this.getAttribute("code")
                         + "/nc.shtml";
@@ -102,21 +112,26 @@ function retrieveBoughtData(){
     
 }
 
-function retrieveSoldData(){
-    var tblSold = document.getElementById("tblSold");
+function retrieveSoldData1(){
+    var tblSold1 = document.getElementById("tblSold1");
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "./retrieveSold", true);
+    xhr.open("GET", "./retrieveSold1", true);
    // xhr.responseType = "json";
     xhr.onreadystatechange = function () {
       if (xhr.readyState == xhr.DONE) {
         var jsonData = xhr.response;
+        if(jsonData == undefined){
+            jsonData = xhr.responseText;
+        }
         var jsonArray = JSON.parse(jsonData);
         
         var content = "";
         var item;
         var row;
-        var tBody = tblSold.tBodies[0];
+        var tBody = tblSold1.tBodies[0];
+        //tBody.innerHTML = "";
+        clearTbody(tBody);
         for(var i = 0; i < jsonArray.length; i ++){
         //var content = "<tr><td>sh600000</td><td>浦发银行</td><td>2012/07/31</td><td>6.78</td><td>1000</td><td>6.89</td><td>3.0%</td></tr>";
         //content += content;
@@ -129,18 +144,23 @@ function retrieveSoldData(){
                         + item.code 
                         + "</td>";
             content += "<td>" + item.name + "</td>";
-            content += "<td>" + item.buyDate + "</td>";
+            //content += "<td>" + item.buyDate + "</td>";
+            content += "<td title='" + new Date(parseInt(item.buyDate)).toLocaleString() + "''>" 
+                    + new Date(parseInt(item.buyDate)).format('mm/dd/yyyy') + "</td>";
             content += "<td>" + item.buyPrice + "</td>";
-            content += "<td>" + item.buyVolumn + "</td>";
-            content += "<td>" + item.sellDate + "</td>";
+            content += "<td>" + item.buyVolume + "</td>";
+            //content += "<td>" + item.sellDate + "</td>";
+            content += "<td title='" + new Date(parseInt(item.sellDate)).toLocaleString() + "''>" 
+                    + new Date(parseInt(item.sellDate)).format('mm/dd/yyyy') + "</td>";
             content += "<td>" + item.sellPrice + "</td>";
+            content += "<td>" + item.sellVolume + "</td>";
             content += "<td>" + item.currPrice + "</td>";
             content += "<td>" + ((item.sellPrice - item.buyPrice) * 100 / item.buyPrice).toFixed(2) + "%</td>";
             
             row.innerHTML = content;
-            row.setAttribute("code", item.code);
+            row.firstChild.setAttribute("code", item.code);
 
-            row.addEventListener("click", function(){
+            row.firstChild.addEventListener("click", function(){
                 var url = "http://finance.sina.com.cn/realstock/company/"
                         + this.getAttribute("code")
                         + "/nc.shtml";
@@ -153,4 +173,80 @@ function retrieveSoldData(){
       }
     }
     xhr.send();
+}
+
+
+function retrieveSoldData2(){
+    var tblSold1 = document.getElementById("tblSold2");
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "./retrieveSold2", true);
+   // xhr.responseType = "json";
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == xhr.DONE) {
+        var jsonData = xhr.response;
+        if(jsonData == undefined){
+            jsonData = xhr.responseText;
+        }
+        var jsonArray = JSON.parse(jsonData);
+        
+        var content = "";
+        var item;
+        var row;
+        var tBody = tblSold1.tBodies[0];
+        //tBody.innerHTML = "";
+        clearTbody(tBody);
+        for(var i = 0; i < jsonArray.length; i ++){
+        //var content = "<tr><td>sh600000</td><td>浦发银行</td><td>2012/07/31</td><td>6.78</td><td>1000</td><td>6.89</td><td>3.0%</td></tr>";
+        //content += content;
+            item = jsonArray[i];
+           // content += "<tr>";
+            row =  tBody.insertRow(-1);
+
+            content = "";
+            content += "<td class='stockcode'>" 
+                        + item.code 
+                        + "</td>";
+            content += "<td>" + item.name + "</td>";
+            //content += "<td>" + item.buyDate + "</td>";
+            content += "<td title='" + new Date(parseInt(item.buyDate)).toLocaleString() + "''>" 
+                    + new Date(parseInt(item.buyDate)).format('mm/dd/yyyy') + "</td>";
+            content += "<td>" + item.buyPrice + "</td>";
+            content += "<td>" + item.buyVolume + "</td>";
+            //content += "<td>" + item.sellDate + "</td>";
+            content += "<td title='" + new Date(parseInt(item.sellDate)).toLocaleString() + "''>" 
+                    + new Date(parseInt(item.sellDate)).format('mm/dd/yyyy') + "</td>";
+            content += "<td>" + item.sellPrice + "</td>";
+            content += "<td>" + item.sellVolume + "</td>";
+            content += "<td>" + item.currPrice + "</td>";
+            content += "<td>" + ((item.sellPrice - item.buyPrice) * 100 / item.buyPrice).toFixed(2) + "%</td>";
+            
+            row.innerHTML = content;
+            row.firstChild.setAttribute("code", item.code);
+
+            row.firstChild.addEventListener("click", function(){
+                var url = "http://finance.sina.com.cn/realstock/company/"
+                        + this.getAttribute("code")
+                        + "/nc.shtml";
+                window.open(url);
+            })
+            //content +="</tr>\n";
+        }
+
+        
+      }
+    }
+    xhr.send();
+}
+
+function clearTbody(tBody){
+    try{
+        tBody.innerHTML = "";
+    }catch(e){
+        if(tBody.rows.length > 0){
+            for(var i = 0; i < tBody.rows.length; i ++){
+                tBody.deleteRow(i);
+            }
+        }
+    }
 }
