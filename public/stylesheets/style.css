@@ -29,7 +29,7 @@ td{
 
 
 #wrapper{
-	width:720px;
+	width:1000px;
 	margin:40px auto 0;
 }
 
@@ -49,7 +49,7 @@ td{
 }
 
 #tabContainer {
-	width:800px;
+	width:1000px;
 	padding:15px;
 	background-color:#2e2e2e;
 	-moz-border-radius: 4px;
@@ -135,6 +135,6 @@ td{
 }
 
 .datecell{
-    width:160px;
+    width:360px;
 }
 

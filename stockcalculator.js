@@ -14,6 +14,7 @@ StockCalculator.prototype.EMA = function(n){
 		var self = this;
 		//console.log(self.items);
 		var length = self.items.length;
+
 		return calculateEma(self.items.slice(length - n), n);
 	
 };
@@ -237,6 +238,79 @@ StockCalculator.prototype.LLV = function(values, n){
 		}
 	}
 	return result;
+}
+
+StockCalculator.prototype.getBandWidth = function(myItems){
+	var self = this;
+	if(!myItems){
+		myItems = self.items;
+	}
+	
+	
+	var bandwidth = 0,		//带宽 = 5条均线最大差值
+		close = 0,				//收盘价
+		preLow = 0,				//前一最小值
+		open = 0,					//当天开盘
+		maxBandwidth = 0,	//最大带宽，即5条均线的最大值
+		growth = 0,				//当天涨幅
+		volume = 0,				//当天成交量
+		prevolume = 0,		//前一日成交量
+		purevolume = 0,		//最近20日净成交量
+		ma5 = 0,					//5日线价格
+		ma12 = 0,					//12日线价格
+		ma50 = 0,					//50日线价格
+		ma89 = 0,					//89日线价格
+		ma144 = 0;					//144日线价格
+	
+	var length = myItems.length;
+	var todayItem = myItems[length - 1];
+	var preItem = myItems[length - 2];
+	close = parseFloat(todayItem.close);
+	preLow = parseFloat(preItem.low);
+	open = parseFloat(todayItem.open);
+	growth = (parseFloat(todayItem.close) - parseFloat(preItem.close)) / parseFloat(preItem.close);
+	volume = parseInt(todayItem.volume);
+	prevolume = parseInt(preItem.volume);		
+	
+	var item;
+	for(var i = length-1; i >= length - 20; i--){
+		item = myItems[i];
+
+		if(item.close > myItems[i-1].close)
+			purevolume += parseInt(item.volume);
+		else
+			purevolume -= parseInt(item.volume);	
+			
+	}
+
+	ma5 = self.EMA(5);
+	ma12 = self.EMA(12);
+	ma50 = self.EMA(50);
+	ma89 = self.EMA(89);
+	ma144 = self.EMA(144);
+
+	//debugger;
+	var max = Math.max(ma5, ma12, ma50, ma89, ma144);
+	var min = Math.min(ma5, ma12, ma50, ma89, ma144);
+	bandwidth = max - min;
+	maxBandwidth = max;
+	return {
+		bandwidth: bandwidth,
+		close: close,
+		preLow: preLow,
+		open: open,
+		maxBandwidth: maxBandwidth,
+		growth: growth,
+		volume: volume,
+		prevolume: prevolume,
+		purevolume: purevolume,
+		ma5: ma5,
+		ma12: ma12,
+		ma50: ma50,
+		ma89: ma89,
+		ma144: ma144
+	};
+
 }
 
 

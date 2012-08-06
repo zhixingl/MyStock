@@ -32,6 +32,7 @@ app.configure('production', function(){
 //app.get('/', routes.index);
 routes(app);
 
+//Start the stock worker
 require('./stockworker.js').start();
 
 app.listen(process.env.port || 3000);

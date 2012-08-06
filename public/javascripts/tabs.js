@@ -48,6 +48,7 @@ function initializeData(){
     if(XMLHttpRequest.DONE == undefined){
         XMLHttpRequest.prototype.DONE = 4;
     }
+
     retrieveBoughtData();
     retrieveSoldData1();
     retrieveSoldData2();
@@ -71,16 +72,17 @@ function retrieveBoughtData(){
         var content = "";
         var item;
         var row;
+        var cell;
         var tBody = tblBought.tBodies[0];
         //tBody.innerHTML = "";
         clearTbody(tBody);
         for(var i = 0; i < jsonArray.length; i ++){
-        //var content = "<tr><td>sh600000</td><td>浦发银行</td><td>2012/07/31</td><td>6.78</td><td>1000</td><td>6.89</td><td>3.0%</td></tr>";
-        //content += content;
+
             item = jsonArray[i];
            // content += "<tr>";
             row =  tBody.insertRow(-1);
 
+            
             content = "";
             content += "<td class='stockcode'>" 
                         + item.code 
@@ -88,20 +90,50 @@ function retrieveBoughtData(){
             content += "<td>" + item.name + "</td>";
             content += "<td title='" + new Date(parseInt(item.buyDate)).toLocaleString() + "''>" 
                     + new Date(parseInt(item.buyDate)).format('mm/dd/yyyy') + "</td>";
+            content += "<td>" + new Date(parseInt(item.buyDate)).format('HH:MM:ss') + "</td>";
             content += "<td>" + item.buyPrice + "</td>";
             content += "<td>" + item.buyVolume + "</td>";
             content += "<td>" + item.currPrice + "</td>";
             content += "<td>" + ((item.currPrice - item.buyPrice) * 100 / item.buyPrice).toFixed(2) + "%</td>";
             
             row.innerHTML = content;
-            row.firstChild.setAttribute("code", item.code);
+            
 
-            row.firstChild.addEventListener("click", function(){
-                var url = "http://finance.sina.com.cn/realstock/company/"
-                        + this.getAttribute("code")
-                        + "/nc.shtml";
-                window.open(url);
-            })
+            //Javascript code to insert the table contents
+/*            cell = row.insertCell(-1);
+            cell.setAttribute("class", "stockcode");
+            cell.innerText = item.code;
+
+            row.insertCell(-1).innerText = item.name;
+
+            cell = row.insertCell(-1);
+            cell.setAttribute("title", new Date(parseInt(item.buyDate)).toLocaleString());
+            cell.innerText = new Date(parseInt(item.buyDate)).format('mm/dd/yyyy');
+
+            row.insertCell(-1).innerText = item.buyPrice;
+            row.insertCell(-1).innerText = item.buyVolume;
+            row.insertCell(-1).innerText = item.currPrice;
+            row.insertCell(-1).innerText = ((item.currPrice - item.buyPrice) * 100 / item.buyPrice).toFixed(2) + "%";
+*/
+            //Javascript code to insert the table contents - finish
+
+            row.firstChild.setAttribute("code", item.code);
+            if(row.firstChild.addEventListener){
+                row.firstChild.addEventListener("click", function(){
+                    var url = "http://finance.sina.com.cn/realstock/company/"
+                            + this.getAttribute("code")
+                            + "/nc.shtml";
+                    window.open(url);
+                })
+            }else if(row.firstChild.attachEvent){
+                row.firstChild.attachEvent("onclick", function(){
+                    var myCode = this.event.srcElement.getAttribute("code");
+                    var url = "http://finance.sina.com.cn/realstock/company/"
+                            + myCode
+                            + "/nc.shtml";
+                    window.open(url);
+                })
+            }
             //content +="</tr>\n";
         }
 
@@ -147,11 +179,13 @@ function retrieveSoldData1(){
             //content += "<td>" + item.buyDate + "</td>";
             content += "<td title='" + new Date(parseInt(item.buyDate)).toLocaleString() + "''>" 
                     + new Date(parseInt(item.buyDate)).format('mm/dd/yyyy') + "</td>";
+            content += "<td>" + new Date(parseInt(item.buyDate)).format('HH:MM:ss') + "</td>";
             content += "<td>" + item.buyPrice + "</td>";
             content += "<td>" + item.buyVolume + "</td>";
             //content += "<td>" + item.sellDate + "</td>";
             content += "<td title='" + new Date(parseInt(item.sellDate)).toLocaleString() + "''>" 
                     + new Date(parseInt(item.sellDate)).format('mm/dd/yyyy') + "</td>";
+            content += "<td>" + new Date(parseInt(item.sellDate)).format('HH:MM:ss') + "</td>";
             content += "<td>" + item.sellPrice + "</td>";
             content += "<td>" + item.sellVolume + "</td>";
             content += "<td>" + item.currPrice + "</td>";
@@ -211,11 +245,13 @@ function retrieveSoldData2(){
             //content += "<td>" + item.buyDate + "</td>";
             content += "<td title='" + new Date(parseInt(item.buyDate)).toLocaleString() + "''>" 
                     + new Date(parseInt(item.buyDate)).format('mm/dd/yyyy') + "</td>";
+            content += "<td>" + new Date(parseInt(item.buyDate)).format('HH:MM:ss') + "</td>";
             content += "<td>" + item.buyPrice + "</td>";
             content += "<td>" + item.buyVolume + "</td>";
             //content += "<td>" + item.sellDate + "</td>";
             content += "<td title='" + new Date(parseInt(item.sellDate)).toLocaleString() + "''>" 
                     + new Date(parseInt(item.sellDate)).format('mm/dd/yyyy') + "</td>";
+            content += "<td>" + new Date(parseInt(item.sellDate)).format('HH:MM:ss') + "</td>";
             content += "<td>" + item.sellPrice + "</td>";
             content += "<td>" + item.sellVolume + "</td>";
             content += "<td>" + item.currPrice + "</td>";

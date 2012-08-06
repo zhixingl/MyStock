@@ -1,11 +1,15 @@
 var http = require('http'),
-		util = require('util'),
+	util = require('util'),
     eyes = require('eyes'),
+    azure = require('azure'),
     xml2js = require('xml2js');
+
 
 var StockCalculator = require('./stockcalculator.js');
 var StockDao = require('./model/stockdao.js');
-var azure = require('azure');    
+var Buyer = require('./workers/buyer');
+var Seller1 = require('./workers/seller1') ;
+var Seller2 = require('./workers/seller2');
 
 //var urlTemplate = 'http://money.finance.sina.com.cn/quotes_service/api/xml.php/CN_MarketData.getKLineData?symbol=%s&scale=30&datalen=144';
 
@@ -20,11 +24,15 @@ module.exports.start = function(){
 	buyer.run();
 	var seller1 = new Seller1();
 	seller1.run();
-
 	var seller2 = new Seller2();
 	seller2.run();
+
+	setInterval(buyer.run, 15*60*1000);
+	setInterval(seller1.run, 10*60*1000);
+	setInterval(seller2.run, 10*60*1000);
 }
 
+/*
 function Buyer(){
 }
 
@@ -63,6 +71,7 @@ Buyer.prototype.run = function(){
 }
 
 function sendBuyRequest(code, url){
+	util.log('sendBuyRequest: ' + code);
 	http.get(url, function(res) {
 		 //util.log("Got response: " + res.statusCode);
 		 //util.log(url);		 
@@ -223,6 +232,7 @@ function buyStock(stock){
 
 }
 
+
 function Seller1(){}
 
 Seller1.prototype.run = function(){
@@ -312,6 +322,7 @@ function processAllSell1Items(){
 
 function sendSell1Request(buyStockDao, sellStockDao, stock, url){
 	//util.log(url);
+	util.log('sendSell1Request: ' + stock.code);
 	http.get(url, function(res){
 		var resData = '';
 		if(res.statusCode == 200){
@@ -365,6 +376,7 @@ function sendSell1Request(buyStockDao, sellStockDao, stock, url){
 
 function sendSell2Request(buyStockDao, sellStockDao, stock, url){
 	//util.log(url);
+	util.log('sendSell2Request: ' + stock.code);
 	http.get(url, function(res){
 		var resData = '';
 		if(res.statusCode == 200){
@@ -442,7 +454,7 @@ function EMA(items, n){
 	}
 }
 
-
+*/
 
 
 

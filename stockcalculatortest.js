@@ -5,7 +5,8 @@ var eyes = require('eyes');
 
 
 
-var url = 'http://money.finance.sina.com.cn/quotes_service/api/xml.php/CN_MarketData.getKLineData?symbol=sz002592&scale=30&datalen=12';
+var url = 'http://money.finance.sina.com.cn/quotes_service/api/xml.php/CN_MarketData.getKLineData?symbol=sh600077&scale=30&datalen=144';
+console.log(url);
 http.get(url, function(res){
 	var resData = '';
 	if(res.statusCode == 200){
@@ -26,12 +27,12 @@ http.get(url, function(res){
 
 					console.log("get the EMA values");
 
-					eyes.inspect(calculator.EMA(1));
-					eyes.inspect(calculator.EMA(2));
-					eyes.inspect(calculator.EMA(3));
-					eyes.inspect(calculator.EMA(4));
 					eyes.inspect(calculator.EMA(5));
 					eyes.inspect(calculator.EMA(12));
+					eyes.inspect(calculator.EMA(50));
+					eyes.inspect(calculator.EMA(89));
+					eyes.inspect(calculator.EMA(144));
+					/*
 					console.log("get the MA0 values");
 					
 					eyes.inspect(calculator.MA0(items[length - 1]));
@@ -106,7 +107,7 @@ http.get(url, function(res){
 
 					}
 					
-
+					*/
 				}else{
 					//console.log('This stock %s does not exist!', code);
 				}
